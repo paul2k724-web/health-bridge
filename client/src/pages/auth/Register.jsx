@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
-import { FiUser, FiMail, FiPhone, FiLock, FiActivity, FiArrowRight, FiBriefcase, FiAward, FiClock, FiFileText } from 'react-icons/fi'
+import { FiUser, FiMail, FiPhone, FiLock, FiActivity, FiArrowRight, FiBriefcase, FiAward, FiClock, FiSun, FiMoon, FiCheck } from 'react-icons/fi'
 import { register } from '../../store/slices/authSlice'
 import { Button, Input, Select } from '../../components/ui'
+import { useTheme } from '../../context/ThemeContext'
 import toast from 'react-hot-toast'
 
 const Register = () => {
@@ -22,6 +23,7 @@ const Register = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { loading } = useSelector((state) => state.auth)
+  const { isDark, toggleTheme } = useTheme()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -52,76 +54,119 @@ const Register = () => {
   ]
 
   return (
-    <div className="min-h-screen flex">
-      <div className="hidden lg:flex lg:w-1/2 bg-primary-900 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-accent-500 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-primary-600 rounded-full blur-3xl" />
+    <div className="min-h-screen flex bg-surface-base dark:bg-slate-900 transition-colors duration-300">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-900 via-slate-800 to-teal-900 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-teal-500/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-teal-600/10 rounded-full blur-3xl" />
+        </div>
+        
+        <div className="absolute top-6 right-6">
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-lg bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
+          >
+            {isDark ? <FiSun className="w-5 h-5 text-white" /> : <FiMoon className="w-5 h-5 text-white" />}
+          </button>
         </div>
         
         <div className="relative z-10 flex flex-col justify-center px-12 xl:px-20">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 rounded-xl bg-accent-500 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center shadow-lg shadow-teal-500/30">
               <FiActivity className="w-7 h-7 text-white" />
             </div>
-            <span className="text-2xl font-semibold text-white">HealthBridge</span>
+            <span className="text-2xl font-bold text-white">HealthBridge</span>
           </div>
           
-          <h1 className="text-4xl xl:text-5xl font-semibold text-white leading-tight mb-6">
-            Join Our Healthcare<br />Network
+          <h1 className="text-4xl xl:text-5xl font-bold text-white leading-tight mb-6">
+            Join Our Healthcare<br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-400">Network</span>
           </h1>
           
-          <p className="text-lg text-primary-300 mb-12 max-w-md">
+          <p className="text-lg text-slate-300 mb-12 max-w-md">
             Whether you're seeking quality healthcare services or looking to 
             offer your professional expertise, we've got you covered.
           </p>
 
-          <div className="space-y-6">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-              <h3 className="text-lg font-medium text-white mb-2">For Customers</h3>
-              <p className="text-primary-300 text-sm">
-                Access verified healthcare professionals, book appointments, 
-                and manage your health records in one place.
-              </p>
+          <div className="space-y-4">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/15 transition-colors">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center flex-shrink-0">
+                  <FiUser className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-1">For Customers</h3>
+                  <p className="text-slate-400 text-sm">
+                    Access verified healthcare professionals, book appointments, 
+                    and manage your health records in one place.
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-              <h3 className="text-lg font-medium text-white mb-2">For Providers</h3>
-              <p className="text-primary-300 text-sm">
-                Grow your practice, manage appointments efficiently, 
-                and connect with patients who need your expertise.
-              </p>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/15 transition-colors">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-400 to-teal-500 flex items-center justify-center flex-shrink-0">
+                  <FiBriefcase className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-1">For Providers</h3>
+                  <p className="text-slate-400 text-sm">
+                    Grow your practice, manage appointments efficiently, 
+                    and connect with patients who need your expertise.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-surface-base overflow-y-auto">
+      <div className="flex-1 flex items-center justify-center px-6 py-12 overflow-y-auto relative">
+        <div className="absolute top-6 right-6 lg:hidden">
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+          >
+            {isDark ? <FiSun className="w-5 h-5 text-slate-200" /> : <FiMoon className="w-5 h-5 text-slate-600" />}
+          </button>
+        </div>
+        
         <div className="w-full max-w-lg animate-fade-up">
           <div className="lg:hidden flex items-center justify-center gap-2 mb-8">
-            <div className="w-10 h-10 rounded-lg bg-primary-900 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center shadow-lg shadow-teal-500/30">
               <FiActivity className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-semibold text-primary-900">HealthBridge</span>
+            <span className="text-xl font-bold text-slate-800 dark:text-white">HealthBridge</span>
           </div>
 
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-semibold text-primary-900 mb-2">
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">
               Create your account
             </h2>
-            <p className="text-primary-500">
+            <p className="text-slate-500 dark:text-slate-400">
               Get started with HealthBridge today
             </p>
           </div>
 
-          <div className="bg-white rounded-xl shadow-card p-8">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl dark:shadow-none border border-slate-200 dark:border-slate-700 p-8">
             <div className="flex items-center justify-center gap-2 mb-8">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${step >= 1 ? 'bg-primary-900 text-white' : 'bg-primary-100 text-primary-400'}`}>
-                1
-              </div>
-              <div className={`h-0.5 w-12 ${step >= 2 ? 'bg-primary-900' : 'bg-primary-200'}`} />
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${step >= 2 ? 'bg-primary-900 text-white' : 'bg-primary-100 text-primary-400'}`}>
-                2
-              </div>
+              {[1, 2].map((s) => (
+                <div key={s} className="flex items-center">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
+                    step >= s 
+                      ? 'bg-gradient-to-br from-teal-400 to-cyan-500 text-white shadow-lg shadow-teal-500/30' 
+                      : 'bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500'
+                  }`}>
+                    {step > s ? <FiCheck className="w-5 h-5" /> : s}
+                  </div>
+                  {s < 2 && (
+                    <div className={`h-0.5 w-12 transition-colors ${
+                      step >= s + 1 ? 'bg-gradient-to-r from-teal-400 to-cyan-500' : 'bg-slate-200 dark:bg-slate-700'
+                    }`} />
+                  )}
+                </div>
+              ))}
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -177,7 +222,7 @@ const Register = () => {
                     type="button"
                     variant="primary"
                     size="lg"
-                    className="w-full"
+                    className="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white shadow-lg shadow-teal-500/30"
                     onClick={() => {
                       if (!formData.name || !formData.email || !formData.phone || !formData.password) {
                         toast.error('Please fill all fields')
@@ -197,18 +242,16 @@ const Register = () => {
                 <>
                   {formData.role === 'customer' ? (
                     <div className="text-center py-8">
-                      <div className="w-16 h-16 bg-success-light rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg className="w-8 h-8 text-success" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-teal-500/30">
+                        <FiCheck className="w-8 h-8 text-white" />
                       </div>
-                      <h3 className="text-lg font-semibold text-primary-900 mb-2">Ready to create your account?</h3>
-                      <p className="text-primary-500 text-sm">Review your details and click register to proceed.</p>
+                      <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-2">Ready to create your account?</h3>
+                      <p className="text-slate-500 dark:text-slate-400 text-sm">Review your details and click register to proceed.</p>
                     </div>
                   ) : (
                     <div className="space-y-5">
-                      <div className="bg-info-light rounded-lg p-4 mb-4">
-                        <p className="text-sm text-info-dark">
+                      <div className="bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800 rounded-lg p-4 mb-4">
+                        <p className="text-sm text-cyan-700 dark:text-cyan-300">
                           <strong>Note:</strong> Provider accounts require admin verification after registration.
                         </p>
                       </div>
@@ -242,7 +285,7 @@ const Register = () => {
                       />
 
                       <div className="space-y-1.5">
-                        <label className="block text-sm font-medium text-primary-700">
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                           Professional Bio
                         </label>
                         <textarea
@@ -250,10 +293,10 @@ const Register = () => {
                           placeholder="Tell us about your professional background"
                           value={formData.bio}
                           onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                          className="w-full px-3 py-2.5 bg-white border border-primary-200 rounded-md text-primary-900 placeholder-primary-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-all duration-200"
+                          className="w-full px-3 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200"
                           required={formData.role === 'provider'}
                         />
-                        <p className="text-xs text-primary-400">Max 500 characters</p>
+                        <p className="text-xs text-slate-400 dark:text-slate-500">Max 500 characters</p>
                       </div>
                     </div>
                   )}
@@ -273,7 +316,7 @@ const Register = () => {
                       variant="primary"
                       size="lg"
                       loading={loading}
-                      className="flex-1"
+                      className="flex-1 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white shadow-lg shadow-teal-500/30"
                     >
                       Create Account
                     </Button>
@@ -282,12 +325,12 @@ const Register = () => {
               )}
             </form>
 
-            <div className="mt-6 pt-6 border-t border-primary-100">
-              <p className="text-center text-sm text-primary-500">
+            <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700">
+              <p className="text-center text-sm text-slate-500 dark:text-slate-400">
                 Already have an account?{' '}
                 <Link
                   to="/login"
-                  className="font-medium text-accent-600 hover:text-accent-700"
+                  className="font-medium text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300"
                 >
                   Sign in
                 </Link>
@@ -295,9 +338,9 @@ const Register = () => {
             </div>
           </div>
 
-          <div className="mt-8 flex items-center justify-center gap-6 text-sm text-primary-400">
-            <span>Privacy Policy</span>
-            <span>Terms of Service</span>
+          <div className="mt-8 flex items-center justify-center gap-6 text-sm text-slate-400 dark:text-slate-500">
+            <span className="hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer">Privacy Policy</span>
+            <span className="hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer">Terms of Service</span>
           </div>
         </div>
       </div>

@@ -1,12 +1,12 @@
 import { forwardRef } from 'react'
 
 const variants = {
-  primary: 'bg-primary-900 text-white hover:bg-primary-800 active:bg-primary-950',
-  secondary: 'bg-primary-100 text-primary-700 hover:bg-primary-200 active:bg-primary-300',
-  outline: 'border border-primary-300 text-primary-700 hover:bg-primary-50 active:bg-primary-100',
-  ghost: 'text-primary-600 hover:bg-primary-50 active:bg-primary-100',
-  danger: 'bg-error text-white hover:bg-error-dark active:bg-red-900',
-  success: 'bg-success text-white hover:bg-success-dark active:bg-emerald-800',
+  primary: 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white hover:from-teal-600 hover:to-cyan-600 shadow-lg shadow-teal-500/25',
+  secondary: 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600',
+  outline: 'border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800',
+  ghost: 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800',
+  danger: 'bg-red-500 text-white hover:bg-red-600 shadow-lg shadow-red-500/25',
+  success: 'bg-emerald-500 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-500/25',
 }
 
 const sizes = {
@@ -31,7 +31,7 @@ const Button = forwardRef(({
     inline-flex items-center justify-center gap-2
     font-medium rounded-md
     transition-all duration-200 ease-smooth
-    focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2
+    focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900
     disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
   `
 
