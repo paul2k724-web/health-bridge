@@ -1,0 +1,358 @@
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import api from '../../store/api'
+import { DashboardLayout } from '../../components/layout'
+import { Card, Badge, Button, Skeleton } from '../../components/ui'
+import { StatsCard, EmptyState, StatusBadge } from '../../components/shared'
+import { FiBriefcase, FiDollarSign, FiCheckCircle, FiClock, FiCalendar, FiMapPin, FiArrowRight, FiNavigation } from 'react-icons/fi'
+
+const ProviderDashboard = () => {
+  const [stats, setStats] = useState({
+    totalJobs: 0,
+    pendingJobs: 0,
+    completedJobs: 0,
+    earnings: { total: 0, pending: 0, paid: 0 },
+  })
+  const [jobs, setJobs] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchDashboardData()
+  }, [])
+
+  const fetchDashboardData = async () => {
+    try {
+      const [jobsRes, earningsRes] = await Promise.all([
+        api.get('/provider/jobs'),
+        api.get('/provider/earnings'),
+      ])
+
+      const allJobs = jobsRes.data.jobs
+      setJobs(allJobs.slice(0, 5))
+      setStats({
+        totalJobs: allJobs.length,
+        pendingJobs: allJobs.filter((j) => j.status === 'pending').length,
+        completedJobs: allJobs.filter((j) => j.status === 'completed').length,
+        earnings: earningsRes.data.earnings,
+      })
+    } catch (error) {
+      console.error('Failed to fetch dashboard data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleJobAction = async (jobId, action) => {
+    try {
+      if (action === 'accept' || action === 'reject') {
+        await api.patch(`/provider/jobs/${jobId}/accept-reject`, { action })
+      }
+      fetchDashboardData()
+    } catch (error) {
+      console.error('Failed to update job:', error)
+    }
+  }
+
+  const handleStatusUpdate = async (jobId, status) => {
+    try {
+      await api.patch(`/provider/jobs/${jobId}/status`, { status })
+      fetchDashboardData()
+    } catch (error) {
+      console.error('Failed to update status:', error)
+    }
+  }
+
+  const getGoogleMapsUrl = (address) => {
+    if (address?.coordinates) {
+      return `https://www.google.com/maps/dir/?api=1&destination=${address.coordinates.latitude},${address.coordinates.longitude}`
+    }
+    return '#'
+  }
+
+  const pendingJobs = jobs.filter((j) => j.status === 'pending')
+  const todayJobs = jobs.filter((j) => {
+    const today = new Date().toDateString()
+    return new Date(j.scheduledDate).toDateString() === today
+  })
+
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <Skeleton.Card key={i} />
+            ))}
+          </div>
+          <Skeleton variant="card" className="h-64" />
+        </div>
+      </DashboardLayout>
+    )
+  }
+
+  return (
+    <DashboardLayout title="Dashboard">
+      <div className="space-y-8 animate-fade-up">
+        <div>
+          <h1 className="text-page-title text-primary-900">Provider Dashboard</h1>
+          <p className="text-primary-500 mt-1">Manage your appointments and track earnings</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StatsCard
+            title="Total Jobs"
+            value={stats.totalJobs}
+            icon={FiBriefcase}
+            description="All time"
+          />
+          <StatsCard
+            title="Pending"
+            value={stats.pendingJobs}
+            icon={FiClock}
+            description="Awaiting action"
+          />
+          <StatsCard
+            title="Completed"
+            value={stats.completedJobs}
+            icon={FiCheckCircle}
+            description="Successfully completed"
+          />
+          <StatsCard
+            title="Total Earnings"
+            value={`₹${stats.earnings.total?.toLocaleString() || 0}`}
+            icon={FiDollarSign}
+            description="Lifetime earnings"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Card className="lg:col-span-2" padding="none">
+            <div className="px-6 py-4 border-b border-primary-100">
+              <h2 className="text-lg font-semibold text-primary-900">Earnings Overview</h2>
+            </div>
+            <div className="p-6">
+              <div className="grid grid-cols-3 gap-6">
+                <div className="text-center p-4 rounded-lg bg-primary-50">
+                  <p className="text-sm text-primary-500 mb-1">Total Earned</p>
+                  <p className="text-2xl font-semibold text-primary-900">
+                    ₹{stats.earnings.total?.toLocaleString() || 0}
+                  </p>
+                </div>
+                <div className="text-center p-4 rounded-lg bg-warning-light">
+                  <p className="text-sm text-primary-500 mb-1">Pending</p>
+                  <p className="text-2xl font-semibold text-warning-dark">
+                    ₹{stats.earnings.pending?.toLocaleString() || 0}
+                  </p>
+                </div>
+                <div className="text-center p-4 rounded-lg bg-success-light">
+                  <p className="text-sm text-primary-500 mb-1">Paid</p>
+                  <p className="text-2xl font-semibold text-success-dark">
+                    ₹{stats.earnings.paid?.toLocaleString() || 0}
+                  </p>
+                </div>
+              </div>
+              
+              <div className="mt-6 pt-6 border-t border-primary-100">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-sm text-primary-500">Payment Progress</span>
+                  <span className="text-sm font-medium text-primary-700">
+                    {stats.earnings.total > 0 
+                      ? Math.round((stats.earnings.paid / stats.earnings.total) * 100) 
+                      : 0}%
+                  </span>
+                </div>
+                <div className="h-2 bg-primary-100 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-success rounded-full transition-all duration-500"
+                    style={{ 
+                      width: `${stats.earnings.total > 0 
+                        ? Math.round((stats.earnings.paid / stats.earnings.total) * 100) 
+                        : 0}%` 
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          <Card padding="none">
+            <div className="px-6 py-4 border-b border-primary-100">
+              <h2 className="text-lg font-semibold text-primary-900">Today's Schedule</h2>
+            </div>
+            <div className="p-4">
+              {todayJobs.length === 0 ? (
+                <div className="text-center py-8">
+                  <FiCalendar className="w-12 h-12 text-primary-200 mx-auto mb-3" />
+                  <p className="text-sm text-primary-500">No appointments today</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {todayJobs.map((job) => (
+                    <div key={job._id} className="p-3 rounded-lg bg-primary-50">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-medium text-primary-900 text-sm">
+                          {job.service?.name}
+                        </span>
+                        <span className="text-sm text-primary-500">{job.scheduledTime}</span>
+                      </div>
+                      <p className="text-sm text-primary-500">{job.customer?.name}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </Card>
+        </div>
+
+        {pendingJobs.length > 0 && (
+          <Card padding="none">
+            <div className="px-6 py-4 border-b border-primary-100">
+              <h2 className="text-lg font-semibold text-primary-900">Pending Actions</h2>
+              <p className="text-sm text-primary-500">Jobs waiting for your response</p>
+            </div>
+            <div className="divide-y divide-primary-100">
+              {pendingJobs.map((job) => (
+                <div key={job._id} className="px-6 py-4 hover:bg-primary-50 transition-colors">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-warning-light flex items-center justify-center flex-shrink-0">
+                        <FiClock className="w-6 h-6 text-warning" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-primary-900">{job.service?.name}</h3>
+                        <p className="text-sm text-primary-500 mt-1">Customer: {job.customer?.name}</p>
+                        <div className="flex items-center gap-4 mt-2 text-sm text-primary-500">
+                          <span className="flex items-center gap-1">
+                            <FiCalendar className="w-4 h-4" />
+                            {new Date(job.scheduledDate).toLocaleDateString()}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <FiClock className="w-4 h-4" />
+                            {job.scheduledTime}
+                          </span>
+                        </div>
+                        {job.address && (
+                          <p className="text-sm text-primary-500 mt-1 flex items-center gap-1">
+                            <FiMapPin className="w-4 h-4" />
+                            {job.address.addressLine1}, {job.address.city}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="success"
+                        size="sm"
+                        onClick={() => handleJobAction(job._id, 'accept')}
+                      >
+                        Accept
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleJobAction(job._id, 'reject')}
+                        className="text-error border-error hover:bg-error-light"
+                      >
+                        Decline
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        )}
+
+        <Card padding="none">
+          <div className="px-6 py-4 border-b border-primary-100 flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-primary-900">Recent Jobs</h2>
+            <Link to="/provider/jobs" className="text-sm font-medium text-accent-600 hover:text-accent-700 flex items-center gap-1">
+              View all <FiArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+          {jobs.length === 0 ? (
+            <EmptyState
+              icon={FiBriefcase}
+              title="No jobs yet"
+              description="Jobs will appear here when customers book your services"
+            />
+          ) : (
+            <div className="divide-y divide-primary-100">
+              {jobs.map((job) => (
+                <div key={job._id} className="px-6 py-4 hover:bg-primary-50 transition-colors">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center flex-shrink-0">
+                        <FiBriefcase className="w-5 h-5 text-primary-400" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-primary-900">{job.service?.name}</h3>
+                        <p className="text-sm text-primary-500 mt-1">Customer: {job.customer?.name}</p>
+                        <div className="flex items-center gap-4 mt-2 text-sm text-primary-500">
+                          <span className="flex items-center gap-1">
+                            <FiCalendar className="w-4 h-4" />
+                            {new Date(job.scheduledDate).toLocaleDateString()}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <FiClock className="w-4 h-4" />
+                            {job.scheduledTime}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <StatusBadge status={job.status} />
+                      <p className="text-lg font-semibold text-primary-900 mt-2">
+                        ₹{job.amount?.finalAmount}
+                      </p>
+                      <div className="flex items-center gap-2 mt-3">
+                        {job.status === 'accepted' && (
+                          <Button
+                            variant="primary"
+                            size="sm"
+                            onClick={() => handleStatusUpdate(job._id, 'provider_arriving')}
+                          >
+                            Mark Arriving
+                          </Button>
+                        )}
+                        {job.status === 'provider_arriving' && (
+                          <Button
+                            variant="primary"
+                            size="sm"
+                            onClick={() => handleStatusUpdate(job._id, 'in_progress')}
+                          >
+                            Start Service
+                          </Button>
+                        )}
+                        {job.status === 'in_progress' && (
+                          <Link to={`/provider/upload-report/${job._id}`}>
+                            <Button variant="success" size="sm">
+                              Complete & Upload Report
+                            </Button>
+                          </Link>
+                        )}
+                        {job.address?.coordinates && (
+                          <a
+                            href={getGoogleMapsUrl(job.address)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Button variant="ghost" size="sm" icon={FiNavigation}>
+                              Navigate
+                            </Button>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </Card>
+      </div>
+    </DashboardLayout>
+  )
+}
+
+export default ProviderDashboard

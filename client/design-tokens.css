@@ -1,0 +1,38 @@
+:root {
+  /* Colors */
+  --color-primary: #0F172A;
+  --color-primary-dark: #1E3A8A;
+  --color-accent: #0D9488;
+  --color-bg: #F1F5F9;
+  --color-card: #FFFFFF;
+  --color-success: #2F855A;
+  --color-warning: #D69E2E;
+  --color-error: #C53030;
+
+  /* Typography */
+  --font-base: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-size-title: 32px;
+  --font-size-h2: 24px;
+  --font-size-body: 16px;
+  --font-size-meta: 13px;
+
+  --line-height-title: 1.2;
+  --line-height-body: 1.5;
+
+  /* Spacing */
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* Grid */
+  --grid-columns: 12;
+  --grid-gap: var(--spacing-md);
+
+  /* Elevation */
+  --elev-1: 0 1px 3px rgba(0,0,0,0.07);
+  --elev-2: 0 2px 6px rgba(0,0,0,0.07);
+  --elev-hover: 0 4px 8px rgba(0,0,0,0.09);
+}
