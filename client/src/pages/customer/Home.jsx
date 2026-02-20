@@ -16,7 +16,7 @@ import {
 
 const Home = () => {
   const dispatch = useDispatch()
-  const { services } = useSelector((state) => state.service)
+  const { services = [] } = useSelector((state) => state.service || {})
   const { user } = useSelector((state) => state.auth)
 
   useEffect(() => {
