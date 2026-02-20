@@ -164,7 +164,7 @@ const Home = () => {
                 <h3 className="text-lg font-semibold text-primary-900 mb-2 group-hover:text-accent-600 transition-colors">
                   {service.name}
                 </h3>
-                <p className="text-primary-500 text-sm mb-4 line-clamp-2">
+                <p className="text-primary-500 text-sm mb-4">
                   {service.description}
                 </p>
                 <div className="flex items-center justify-between pt-4 border-t border-primary-100">
