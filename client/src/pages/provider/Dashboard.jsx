@@ -94,8 +94,8 @@ const ProviderDashboard = () => {
     <DashboardLayout title="Dashboard">
       <div className="space-y-8 animate-fade-up">
         <div>
-          <h1 className="text-page-title text-primary-900">Provider Dashboard</h1>
-          <p className="text-primary-500 mt-1">Manage your appointments and track earnings</p>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Provider Dashboard</h1>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">Manage your appointments and track earnings</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -127,43 +127,43 @@ const ProviderDashboard = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card className="lg:col-span-2" padding="none">
-            <div className="px-6 py-4 border-b border-primary-100">
-              <h2 className="text-lg font-semibold text-primary-900">Earnings Overview</h2>
+            <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+              <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Earnings Overview</h2>
             </div>
             <div className="p-6">
               <div className="grid grid-cols-3 gap-6">
-                <div className="text-center p-4 rounded-lg bg-primary-50">
-                  <p className="text-sm text-primary-500 mb-1">Total Earned</p>
-                  <p className="text-2xl font-semibold text-primary-900">
+                <div className="text-center p-4 rounded-xl bg-slate-50 dark:bg-slate-700/50">
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Total Earned</p>
+                  <p className="text-2xl font-bold text-slate-800 dark:text-white">
                     ₹{stats.earnings.total?.toLocaleString() || 0}
                   </p>
                 </div>
-                <div className="text-center p-4 rounded-lg bg-warning-light">
-                  <p className="text-sm text-primary-500 mb-1">Pending</p>
-                  <p className="text-2xl font-semibold text-warning-dark">
+                <div className="text-center p-4 rounded-xl bg-amber-50 dark:bg-amber-900/20">
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Pending</p>
+                  <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
                     ₹{stats.earnings.pending?.toLocaleString() || 0}
                   </p>
                 </div>
-                <div className="text-center p-4 rounded-lg bg-success-light">
-                  <p className="text-sm text-primary-500 mb-1">Paid</p>
-                  <p className="text-2xl font-semibold text-success-dark">
+                <div className="text-center p-4 rounded-xl bg-emerald-50 dark:bg-emerald-900/20">
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Paid</p>
+                  <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
                     ₹{stats.earnings.paid?.toLocaleString() || 0}
                   </p>
                 </div>
               </div>
               
-              <div className="mt-6 pt-6 border-t border-primary-100">
+              <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm text-primary-500">Payment Progress</span>
-                  <span className="text-sm font-medium text-primary-700">
+                  <span className="text-sm text-slate-500 dark:text-slate-400">Payment Progress</span>
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                     {stats.earnings.total > 0 
                       ? Math.round((stats.earnings.paid / stats.earnings.total) * 100) 
                       : 0}%
                   </span>
                 </div>
-                <div className="h-2 bg-primary-100 rounded-full overflow-hidden">
+                <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-success rounded-full transition-all duration-500"
+                    className="h-full bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full transition-all duration-500"
                     style={{ 
                       width: `${stats.earnings.total > 0 
                         ? Math.round((stats.earnings.paid / stats.earnings.total) * 100) 
@@ -176,26 +176,26 @@ const ProviderDashboard = () => {
           </Card>
 
           <Card padding="none">
-            <div className="px-6 py-4 border-b border-primary-100">
-              <h2 className="text-lg font-semibold text-primary-900">Today's Schedule</h2>
+            <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+              <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Today's Schedule</h2>
             </div>
             <div className="p-4">
               {todayJobs.length === 0 ? (
                 <div className="text-center py-8">
-                  <FiCalendar className="w-12 h-12 text-primary-200 mx-auto mb-3" />
-                  <p className="text-sm text-primary-500">No appointments today</p>
+                  <FiCalendar className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+                  <p className="text-sm text-slate-500 dark:text-slate-400">No appointments today</p>
                 </div>
               ) : (
                 <div className="space-y-3">
                   {todayJobs.map((job) => (
-                    <div key={job._id} className="p-3 rounded-lg bg-primary-50">
+                    <div key={job._id} className="p-3 rounded-lg bg-slate-50 dark:bg-slate-700/50">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium text-primary-900 text-sm">
+                        <span className="font-medium text-slate-800 dark:text-white text-sm">
                           {job.service?.name}
                         </span>
-                        <span className="text-sm text-primary-500">{job.scheduledTime}</span>
+                        <span className="text-sm text-slate-500 dark:text-slate-400">{job.scheduledTime}</span>
                       </div>
-                      <p className="text-sm text-primary-500">{job.customer?.name}</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">{job.customer?.name}</p>
                     </div>
                   ))}
                 </div>
@@ -206,22 +206,22 @@ const ProviderDashboard = () => {
 
         {pendingJobs.length > 0 && (
           <Card padding="none">
-            <div className="px-6 py-4 border-b border-primary-100">
-              <h2 className="text-lg font-semibold text-primary-900">Pending Actions</h2>
-              <p className="text-sm text-primary-500">Jobs waiting for your response</p>
+            <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+              <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Pending Actions</h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Jobs waiting for your response</p>
             </div>
-            <div className="divide-y divide-primary-100">
+            <div className="divide-y divide-slate-200 dark:divide-slate-700">
               {pendingJobs.map((job) => (
-                <div key={job._id} className="px-6 py-4 hover:bg-primary-50 transition-colors">
+                <div key={job._id} className="px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-lg bg-warning-light flex items-center justify-center flex-shrink-0">
-                        <FiClock className="w-6 h-6 text-warning" />
+                      <div className="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
+                        <FiClock className="w-6 h-6 text-amber-500 dark:text-amber-400" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-primary-900">{job.service?.name}</h3>
-                        <p className="text-sm text-primary-500 mt-1">Customer: {job.customer?.name}</p>
-                        <div className="flex items-center gap-4 mt-2 text-sm text-primary-500">
+                        <h3 className="font-medium text-slate-800 dark:text-white">{job.service?.name}</h3>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Customer: {job.customer?.name}</p>
+                        <div className="flex items-center gap-4 mt-2 text-sm text-slate-500 dark:text-slate-400">
                           <span className="flex items-center gap-1">
                             <FiCalendar className="w-4 h-4" />
                             {new Date(job.scheduledDate).toLocaleDateString()}
@@ -232,7 +232,7 @@ const ProviderDashboard = () => {
                           </span>
                         </div>
                         {job.address && (
-                          <p className="text-sm text-primary-500 mt-1 flex items-center gap-1">
+                          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
                             <FiMapPin className="w-4 h-4" />
                             {job.address.addressLine1}, {job.address.city}
                           </p>
@@ -251,7 +251,7 @@ const ProviderDashboard = () => {
                         variant="outline"
                         size="sm"
                         onClick={() => handleJobAction(job._id, 'reject')}
-                        className="text-error border-error hover:bg-error-light"
+                        className="text-red-500 border-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
                       >
                         Decline
                       </Button>
@@ -264,9 +264,9 @@ const ProviderDashboard = () => {
         )}
 
         <Card padding="none">
-          <div className="px-6 py-4 border-b border-primary-100 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-primary-900">Recent Jobs</h2>
-            <Link to="/provider/jobs" className="text-sm font-medium text-accent-600 hover:text-accent-700 flex items-center gap-1">
+          <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Recent Jobs</h2>
+            <Link to="/provider/jobs" className="text-sm font-medium text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 flex items-center gap-1">
               View all <FiArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -277,18 +277,18 @@ const ProviderDashboard = () => {
               description="Jobs will appear here when customers book your services"
             />
           ) : (
-            <div className="divide-y divide-primary-100">
+            <div className="divide-y divide-slate-200 dark:divide-slate-700">
               {jobs.map((job) => (
-                <div key={job._id} className="px-6 py-4 hover:bg-primary-50 transition-colors">
+                <div key={job._id} className="px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center flex-shrink-0">
-                        <FiBriefcase className="w-5 h-5 text-primary-400" />
+                      <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center flex-shrink-0">
+                        <FiBriefcase className="w-5 h-5 text-slate-400 dark:text-slate-500" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-primary-900">{job.service?.name}</h3>
-                        <p className="text-sm text-primary-500 mt-1">Customer: {job.customer?.name}</p>
-                        <div className="flex items-center gap-4 mt-2 text-sm text-primary-500">
+                        <h3 className="font-medium text-slate-800 dark:text-white">{job.service?.name}</h3>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Customer: {job.customer?.name}</p>
+                        <div className="flex items-center gap-4 mt-2 text-sm text-slate-500 dark:text-slate-400">
                           <span className="flex items-center gap-1">
                             <FiCalendar className="w-4 h-4" />
                             {new Date(job.scheduledDate).toLocaleDateString()}
@@ -302,7 +302,7 @@ const ProviderDashboard = () => {
                     </div>
                     <div className="text-right">
                       <StatusBadge status={job.status} />
-                      <p className="text-lg font-semibold text-primary-900 mt-2">
+                      <p className="text-lg font-semibold text-slate-800 dark:text-white mt-2">
                         ₹{job.amount?.finalAmount}
                       </p>
                       <div className="flex items-center gap-2 mt-3">
