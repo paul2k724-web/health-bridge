@@ -23,7 +23,7 @@ const DashboardLayout = ({ children, title, breadcrumbs }) => {
   }
 
   return (
-    <div className="min-h-screen bg-surface-base">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
       <Sidebar 
         collapsed={sidebarCollapsed} 
         onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -50,7 +50,7 @@ const DashboardLayout = ({ children, title, breadcrumbs }) => {
 
       {mobileMenuOpen && (
         <div 
-          className="fixed inset-0 bg-primary-900/50 z-30 lg:hidden"
+          className="fixed inset-0 bg-slate-900/50 z-30 lg:hidden"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}

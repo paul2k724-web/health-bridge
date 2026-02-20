@@ -84,7 +84,8 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
     <aside
       className={`
         fixed left-0 top-0 h-screen
-        bg-primary-900 text-white
+        bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900
+        text-white
         flex flex-col
         transition-all duration-200 ease-smooth
         z-40
@@ -94,14 +95,14 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
       <div className={`flex items-center h-16 px-4 border-b border-white/10 ${collapsed ? 'justify-center' : 'justify-between'}`}>
         {!collapsed && (
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-accent-500 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center shadow-lg shadow-teal-500/30">
               <FiActivity className="w-5 h-5 text-white" />
             </div>
-            <span className="font-semibold text-lg">HealthBridge</span>
+            <span className="font-bold text-lg">HealthBridge</span>
           </div>
         )}
         {collapsed && (
-          <div className="w-8 h-8 rounded-lg bg-accent-500 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center shadow-lg shadow-teal-500/30">
             <FiActivity className="w-5 h-5 text-white" />
           </div>
         )}
@@ -119,7 +120,7 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
 
       {!collapsed && (
         <div className="px-4 py-3">
-          <p className="text-xs font-medium text-primary-400 uppercase tracking-wider">
+          <p className="text-xs font-medium text-teal-400 uppercase tracking-wider">
             {getRoleLabel()}
           </p>
         </div>
@@ -138,8 +139,8 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
                 flex items-center gap-3 px-3 py-2.5 rounded-lg
                 transition-all duration-150
                 ${isActive
-                  ? 'bg-white/10 text-white border-l-2 border-accent-500 -ml-[2px] pl-[calc(0.75rem+2px)]'
-                  : 'text-primary-300 hover:text-white hover:bg-white/5'
+                  ? 'bg-gradient-to-r from-teal-500/20 to-cyan-500/20 text-white border-l-2 border-teal-400 -ml-[2px] pl-[calc(0.75rem+2px)]'
+                  : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }
                 ${collapsed ? 'justify-center px-2' : ''}
               `}
@@ -157,7 +158,7 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
           onClick={handleLogout}
           className={`
             flex items-center gap-3 w-full px-3 py-2.5 rounded-lg
-            text-primary-300 hover:text-white hover:bg-white/5
+            text-slate-400 hover:text-white hover:bg-white/5
             transition-all duration-150
             ${collapsed ? 'justify-center px-2' : ''}
           `}
@@ -171,7 +172,7 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
       {!collapsed && user && (
         <div className="border-t border-white/10 p-4">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-primary-700 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center shadow-lg shadow-teal-500/20">
               <span className="text-sm font-medium text-white">
                 {user.name?.charAt(0).toUpperCase() || 'U'}
               </span>
@@ -180,7 +181,7 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
               <p className="text-sm font-medium text-white truncate">
                 {user.name || 'User'}
               </p>
-              <p className="text-xs text-primary-400 truncate">
+              <p className="text-xs text-slate-400 truncate">
                 {user.email || ''}
               </p>
             </div>

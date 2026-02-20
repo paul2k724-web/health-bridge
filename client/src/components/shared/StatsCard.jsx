@@ -16,21 +16,21 @@ const StatsCard = ({
     <div
       onClick={onClick}
       className={`
-        bg-white rounded-lg shadow-card p-6
+        bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6
         transition-all duration-200
-        ${onClick ? 'cursor-pointer hover:shadow-elevated hover:-translate-y-0.5' : ''}
+        ${onClick ? 'cursor-pointer hover:shadow-lg hover:-translate-y-0.5 hover:border-teal-500 dark:hover:border-teal-500' : ''}
         ${className}
       `}
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <p className="text-sm font-medium text-primary-500 mb-1">{title}</p>
-          <p className="text-3xl font-semibold text-primary-900">{value}</p>
+          <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">{title}</p>
+          <p className="text-3xl font-bold text-slate-800 dark:text-white">{value}</p>
           {description && (
-            <p className="text-sm text-primary-400 mt-1">{description}</p>
+            <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">{description}</p>
           )}
           {trendValue && (
-            <div className={`flex items-center gap-1 mt-2 ${isPositiveTrend ? 'text-success' : 'text-error'}`}>
+            <div className={`flex items-center gap-1 mt-2 ${isPositiveTrend ? 'text-emerald-500' : 'text-red-500'}`}>
               {isPositiveTrend ? (
                 <FiTrendingUp className="w-4 h-4" />
               ) : (
@@ -41,8 +41,8 @@ const StatsCard = ({
           )}
         </div>
         {Icon && (
-          <div className="w-12 h-12 rounded-lg bg-primary-50 flex items-center justify-center">
-            <Icon className="w-6 h-6 text-primary-400" />
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-teal-500/20">
+            <Icon className="w-6 h-6 text-white" />
           </div>
         )}
       </div>

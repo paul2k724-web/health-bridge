@@ -16,7 +16,7 @@ const Card = forwardRef(({
   }
 
   const hoverStyles = hover
-    ? 'cursor-pointer transition-all duration-200 hover:shadow-elevated hover:-translate-y-0.5'
+    ? 'cursor-pointer transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:border-teal-500 dark:hover:border-teal-500'
     : ''
 
   const clickableStyles = onClick ? 'cursor-pointer' : ''
@@ -26,7 +26,7 @@ const Card = forwardRef(({
       ref={ref}
       onClick={onClick}
       className={`
-        bg-white rounded-lg shadow-card
+        bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700
         ${paddingStyles[padding]}
         ${hoverStyles}
         ${clickableStyles}
@@ -49,13 +49,13 @@ const CardHeader = ({ children, className = '', action }) => (
 )
 
 const CardTitle = ({ children, className = '' }) => (
-  <h3 className={`text-lg font-semibold text-primary-900 ${className}`}>
+  <h3 className={`text-lg font-semibold text-slate-800 dark:text-white ${className}`}>
     {children}
   </h3>
 )
 
 const CardDescription = ({ children, className = '' }) => (
-  <p className={`text-sm text-primary-500 mt-1 ${className}`}>
+  <p className={`text-sm text-slate-500 dark:text-slate-400 mt-1 ${className}`}>
     {children}
   </p>
 )
@@ -65,11 +65,11 @@ const CardContent = ({ children, className = '' }) => (
 )
 
 const CardDivider = () => (
-  <div className="border-t border-primary-100 my-4" />
+  <div className="border-t border-slate-200 dark:border-slate-700 my-4" />
 )
 
 const CardFooter = ({ children, className = '' }) => (
-  <div className={`mt-4 pt-4 border-t border-primary-100 ${className}`}>
+  <div className={`mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 ${className}`}>
     {children}
   </div>
 )
